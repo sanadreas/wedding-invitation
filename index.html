@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Приглашение на свадьбу</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&family=Marck+Script&display=swap" rel="stylesheet">
+    <!-- Yandex Maps API -->
+    <script src="https://api-maps.yandex.ru/2.1/?apikey=d9324d19-d44f-48a8-aee9-6f6e1e67d414&lang=ru_RU"></script>
+    <style>
+        body {
+            background-color: #f5f5e9;
+            font-family: 'Caveat', 'Arial', italic; /* Основной шрифт для текста */
+            color: #4a3c31;
+            margin: 0;
+            overflow-x: hidden;
+        }
+        h1, h2, h3 {
+            font-family: 'Marck Script', cursive; /* Шрифт для заголовков */
+            color: #6b705c;
+        }
+        .header-section {
+            position: relative;
+            height: 100vh;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            text-align: center;
+            background-color: #f5f5e9;
+            overflow: hidden;
+        }
+        .header-top {
+            position: relative;
+            width: 100%;
+            height: 25%;
+            background: rgba(245, 245, 233, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            overflow: hidden;
+        }
+        .arch {
+            position: absolute;
+            width: 120%;
+            height: 100%;
+            top: -10%;
+            left: -10%;
+            background: url('https://www.pngarts.com/files/13/White-Chamomile-Transparent-PNG.png') repeat-x;
+            background-size: 150px;
+            opacity: 0.8;
+            transform: skewY(-5deg);
+            z-index: 1;
+        }
+        .cloud {
+            position: absolute;
+            background: url('https://www.pngarts.com/files/13/White-Chamomile-Transparent-PNG.png') no-repeat;
+            background-size: contain;
+            opacity: 0.9;
+            z-index: 2;
+            animation: float 6s infinite ease-in-out;
+        }
+        .cloud-1 { width: 100px; height: 100px; top: 20%; left: 18%; }
+        .cloud-2 { width: 80px; height: 80px; top: 10%; right: 25%; animation-delay: 1s; }
+        .cloud-3 { width: 120px; height: 120px; top: 25%; right: 20%; animation-delay: 0.5s; }
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
+        }
+        .header-content {
+            position: relative;
+            z-index: 3;
+            padding: 20px;
+            max-width: 500px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .photo-container {
+            position: relative;
+            margin: 20px 0;
+            display: inline-block;
+        }
+        .header-image {
+            width: 100%;
+            max-width: 300px;
+            height: auto;
+            border-radius: 10px;
+            transform: rotate(-3deg);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            border: 8px solid white;
+        }
+        .header-title {
+            font-family: 'Marck Script', cursive; /* Оставляем Marck Script */
+            font-size: 6.5rem;
+            position: relative;
+            z-index: 2;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+            line-height: 1;
+        }
+        .title-part-1 {
+            display: block;
+            text-align: left;
+            margin-left: -20px;
+        }
+        .title-part-2 {
+            display: block;
+            text-align: right;
+            margin-right: -20px;
+            margin-top: -10px;
+        }
+        .header-date {
+            font-family: 'Marck Script', cursive; /* Оставляем Marck Script */
+            font-size: 3rem;
+            color: #6b705c;
+            position: relative;
+            z-index: 2;
+            margin-top: auto;
+            margin-bottom: 150px;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+        }
+        .flower {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            z-index: 0;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            filter: drop-shadow(2px 4px 4px rgba(0,0,0,0.1));
+            mix-blend-mode: normal;
+        }
+        .flower-1 { top: 25%; left: 5%; animation: sway 5s ease-in-out infinite; background-image: url('https://www.pngarts.com/files/13/White-Chamomile-Transparent-PNG.png'); }
+        .flower-2 { bottom: 15%; right: 8%; animation: sway 6s ease-in-out infinite; animation-delay: 1s; background-image: url('https://www.pngarts.com/files/13/White-Chamomile-Transparent-PNG.png'); }
+        .flower-3 { left: 8%; top: 50%; transform: rotate(-15deg); animation: sway 4s ease-in-out infinite; animation-delay: 0.5s; background-image: url('https://www.pngarts.com/files/13/White-Chamomile-Transparent-PNG.png'); }
+        .flower-4 { right: 8%; top: 40%; transform: rotate(15deg); animation: sway 5s ease-in-out infinite; animation-delay: 1.5s; background-image: url('https://www.pngarts.com/files/13/White-Chamomile-Transparent-PNG.png'); }
+        .chamomile-bush {
+            position: absolute;
+            bottom: 0;
+            width: 250px;
+            height: 200px;
+            background: url('https://www.pngarts.com/files/13/Chamomile-Flower-PNG-Transparent-Image.png') no-repeat;
+            background-size: contain;
+            z-index: 0;
+            filter: drop-shadow(2px 4px 4px rgba(0,0,0,0.1));
+            mix-blend-mode: normal;
+        }
+        .bush-1 { left: 5%; }
+        .bush-2 { left: 25%; }
+        .bush-3 { right: 25%; }
+        .bush-4 { right: 5%; }
+        .calendar-section {
+            position: relative;
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            background-image: linear-gradient(to bottom, #f9f9f5, #fff);
+        }
+        .calendar-header {
+            font-family: 'Marck Script', cursive; /* Оставляем Marck Script */
+            color: #6b705c;
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+        .calendar-month {
+            font-family: 'Caveat', 'Arial', italic;
+            color: #4a3c31;
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        .calendar-frame {
+            border: 2px solid #6b705c;
+            padding: 15px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.05);
+        }
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 5px;
+            max-width: 450px;
+            margin: 0 auto;
+            padding: 10px;
+        }
+        .calendar-day {
+            padding: 12px;
+            font-size: 1.2rem;
+            color: #4a3c31;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            font-family: 'Caveat', 'Arial', italic;
+        }
+        .calendar-day.empty {
+            background: transparent;
+            visibility: hidden;
+        }
+        .calendar-day.header {
+            font-weight: bold;
+            color: #6b705c;
+            background: #d9c5b2;
+            border: 1px solid #6b705c;
+        }
+        .calendar-day.wedding-day {
+            background: #cdc9a9;
+            color: #fff;
+            font-weight: bold;
+            font-size: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            border: 2px solid #6b705c;
+            position: relative;
+        }
+        .calendar-day.wedding-day::after {
+            content: "Свадьба!";
+            position: absolute;
+            top: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: 'Marck Script', cursive;
+            font-size: 1rem;
+            color: #6b705c;
+            background: #fff;
+            padding: 2px 8px;
+            border-radius: 3px;
+        }
+        .calendar-flower {
+            position: absolute;
+            width: 70px;
+            height: 70px;
+            background: url('https://www.pngarts.com/files/13/White-Chamomile-Transparent-PNG.png') no-repeat;
+            background-size: contain;
+            filter: drop-shadow(2px 4px 4px rgba(0,0,0,0.1));
+        }
+        .calendar-flower-1 { top: 10px; left: 10px; transform: rotate(-15deg); }
+        .calendar-flower-2 { bottom: 10px; right: 10px; transform: rotate(15deg); }
+        .venue-section {
+            position: relative;
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+        .venue-header {
+            font-family: 'Marck Script', cursive; /* Оставляем Marck Script */
+            color: #6b705c;
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+        #venue-map {
+            width: 100%;
+            height: 400px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+        .schedule-section {
+            position: relative;
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+        .schedule-section h2 {
+            font-family: 'Marck Script', cursive; /* Оставляем Marck Script */
+        }
+        .schedule-list {
+            text-align: left;
+            max-width: 300px;
+            margin: 0 auto;
+            font-family: 'Caveat', 'Arial', italic;
+        }
+        .schedule-flower {
+            position: absolute;
+            width: 70px;
+            height: 70px;
+            background: url('https://www.pngarts.com/files/13/White-Chamomile-Transparent-PNG.png') no-repeat;
+            background-size: contain;
+            filter: drop-shadow(2px 4px 4px rgba(0,0,0,0.1));
+        }
+        .schedule-flower-1 { top: 10px; left: 10px; transform: rotate(-15deg); }
+        .schedule-flower-2 { bottom: 10px; right: 10px; transform: rotate(15deg); }
+        .confirmation-section {
+            position: relative;
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+        .custom-input {
+            width: 100%;
+            padding: 10px 15px;
+            font-size: 1rem;
+            border: none;
+            border-bottom: 2px solid #6b705c;
+            background: transparent;
+            outline: none;
+            transition: border-bottom-color 0.3s ease;
+            font-family: 'Caveat', 'Arial', italic;
+        }
+        .custom-input:focus {
+            border-bottom-color: #5a5e4d;
+        }
+        .custom-input::placeholder {
+            color: #4a3c31;
+            opacity: 1;
+        }
+        .radio-group {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin: 15px 0;
+        }
+        .radio-option {
+            display: flex;
+            align-items: center;
+            font-size: 1rem;
+            color: #4a3c31;
+            font-family: 'Caveat', 'Arial', italic;
+        }
+        .radio-option input[type="radio"] {
+            margin-right: 8px;
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            border: 2px solid #6b705c;
+            border-radius: 50%;
+            position: relative;
+            cursor: pointer;
+            transition: border-color 0.3s ease;
+        }
+        .radio-option input[type="radio"]:checked {
+            border-color: #cdc9a9;
+        }
+        .radio-option input[type="radio"]:checked::after {
+            content: '';
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: #cdc9a9;
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        .submit-button {
+            background: #6b705c;
+            color: #fff;
+            padding: 12px 25px;
+            border-radius: 25px;
+            text-decoration: none;
+            display: block;
+            margin: 20px auto 0;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            width: fit-content;
+            font-family: 'Caveat', 'Arial', italic;
+        }
+        .submit-button:hover {
+            background: #5a5e4d;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .confirmation-message {
+            display: none;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            height: 100vh;
+            width: 100%;
+            background: #f5f5e9;
+            text-align: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .confirmation-message.show {
+            display: flex;
+        }
+        .confirmation-message h3 {
+            font-family: 'Marck Script', cursive; /* Оставляем Marck Script для "Будем вас очень ждать!" */
+            font-size: 2.5rem;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+        .confirmation-image {
+            max-width: 90%;
+            max-height: calc(100vh - 120px);
+            width: auto;
+            height: auto;
+            object-fit: contain;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        @keyframes sway {
+            0%, 100% { transform: rotate(-5deg) translateY(0); }
+            50% { transform: rotate(5deg) translateY(-15px); }
+        }
+        @media (max-width: 768px) {
+            .header-title { font-size: 4.5rem; }
+            .title-part-1 { margin-left: -10px; }
+            .title-part-2 { margin-right: -10px; margin-top: -5px; }
+            .header-date { font-size: 2.5rem; margin-bottom: 100px; }
+            .header-image { max-width: 220px; border-width: 6px; }
+            .flower { width: 50px; height: 50px; }
+            .flower-1 { left: 3%; top: 30%; }
+            .flower-2 { right: 3%; bottom: 20%; }
+            .flower-3 { left: 3%; }
+            .flower-4 { right: 3%; }
+            .cloud-1 { width: 70px; height: 70px; }
+            .cloud-2 { width: 50px; height: 50px; }
+            .cloud-3 { width: 80px; height: 80px; }
+            .chamomile-bush { width: 130px; height: 130px; }
+            .bush-1 { left: 0; }
+            .bush-2 { left: 23%; }
+            .bush-3 { right: 23%; }
+            .bush-4 { right: 0; }
+            .calendar-section { margin: 20px; padding: 15px; }
+            .calendar-header { font-size: 2.5rem; }
+            .calendar-month { font-size: 1.5rem; }
+            .calendar-frame { padding: 10px; }
+            .calendar-grid { max-width: 250px; margin: 0 auto; }
+            .calendar-day { padding: 6px; font-size: 0.9rem; }
+            .calendar-day.wedding-day { font-size: 1.1rem; }
+            .calendar-day.wedding-day::after { font-size: 0.7rem; top: -25px; }
+            .calendar-flower { width: 50px; height: 50px; }
+            .venue-section { margin: 20px; padding: 15px; }
+            .venue-header { font-size: 2.5rem; }
+            #venue-map { height: 300px; }
+            .schedule-section { margin: 20px; padding: 15px; }
+            .schedule-flower { width: 50px; height: 50px; }
+            .schedule-list { max-width: 250px; }
+            .confirmation-section { margin: 20px; padding: 15px; }
+            .custom-input { font-size: 1rem; padding: 8px 12px; }
+            .radio-group { flex-direction: column; gap: 10px; }
+            .radio-option { font-size: 1rem; }
+            .submit-button { font-size: 1rem; padding: 10px 20px; }
+            .confirmation-message h3 { font-size: 2rem; }
+            .confirmation-image { max-height: calc(100vh - 100px); }
+        }
+    </style>
+</head>
+<body>
+<!-- Header Section -->
+<section class="header-section">
+    <div class="header-top">
+        <div class="arch"></div>
+        <div class="cloud cloud-1"></div>
+        <div class="cloud cloud-2"></div>
+        <div class="cloud cloud-3"></div>
+    </div>
+    <div class="header-content">
+        <h1 class="header-title">
+            <span class="title-part-1">Саша</span>
+            <span class="title-part-2">& Аня</span>
+        </h1>
+        <div class="photo-container">
+            <img src="public/invite.jpg" alt="Саша и Аня" class="header-image">
+        </div>
+        <p class="header-date">14.08.2025</p>
+    </div>
+    <div class="flower flower-1"></div>
+    <div class="flower flower-2"></div>
+    <div class="flower flower-3"></div>
+    <div class="flower flower-4"></div>
+    <div class="chamomile-bush bush-1"></div>
+    <div class="chamomile-bush bush-2"></div>
+    <div class="chamomile-bush bush-3"></div>
+    <div class="chamomile-bush bush-4"></div>
+</section>
+
+<!-- Секция: Дорогие наши друзья и родные! -->
+<section class="section">
+    <h2 class="text-4xl mb-4">Дорогие наши друзья и родные!</h2>
+    <p class="text-2xl">
+        Совсем скоро состоится очень важное и радостное для нас событие - наша свадьба. <br>
+        Этот день невозможно представить без самых близких для нас людей, мы бы очень хотели, чтобы вы провели его вместе с нами.
+    </p>
+    <a href="#confirmation" class="button">Я буду</a>
+</section>
+
+<!-- Секция: Мы ждём вас (с календарём) -->
+<section class="calendar-section">
+    <h2 class="calendar-header">Мы ждём вас</h2>
+    <p class="calendar-month">Август 2025</p>
+    <div class="calendar-frame">
+        <div class="calendar-grid">
+            <div class="calendar-day header">Пн</div>
+            <div class="calendar-day header">Вт</div>
+            <div class="calendar-day header">Ср</div>
+            <div class="calendar-day header">Чт</div>
+            <div class="calendar-day header">Пт</div>
+            <div class="calendar-day header">Сб</div>
+            <div class="calendar-day header">Вс</div>
+            <div class="calendar-day empty"></div>
+            <div class="calendar-day empty"></div>
+            <div class="calendar-day empty"></div>
+            <div class="calendar-day empty"></div>
+            <div class="calendar-day">1</div>
+            <div class="calendar-day">2</div>
+            <div class="calendar-day">3</div>
+            <div class="calendar-day">4</div>
+            <div class="calendar-day">5</div>
+            <div class="calendar-day">6</div>
+            <div class="calendar-day">7</div>
+            <div class="calendar-day">8</div>
+            <div class="calendar-day">9</div>
+            <div class="calendar-day">10</div>
+            <div class="calendar-day">11</div>
+            <div class="calendar-day">12</div>
+            <div class="calendar-day">13</div>
+            <div class="calendar-day wedding-day">14</div>
+            <div class="calendar-day">15</div>
+            <div class="calendar-day">16</div>
+            <div class="calendar-day">17</div>
+            <div class="calendar-day">18</div>
+            <div class="calendar-day">19</div>
+            <div class="calendar-day">20</div>
+            <div class="calendar-day">21</div>
+            <div class="calendar-day">22</div>
+            <div class="calendar-day">23</div>
+            <div class="calendar-day">24</div>
+            <div class="calendar-day">25</div>
+            <div class="calendar-day">26</div>
+            <div class="calendar-day">27</div>
+            <div class="calendar-day">28</div>
+            <div class="calendar-day">29</div>
+            <div class="calendar-day">30</div>
+            <div class="calendar-day">31</div>
+        </div>
+    </div>
+    <div class="calendar-flower calendar-flower-1"></div>
+    <div class="calendar-flower calendar-flower-2"></div>
+</section>
+
+<!-- Секция: Место проведения -->
+<section class="venue-section">
+    <h2 class="venue-header">Место проведения</h2>
+    <p class="text-2xl">
+        Наша свадьба пройдёт в Череповце! <br>
+        Церемония состоится во Дворце бракосочетания (зелёная метка), <br>
+        а праздничный банкет — в Банкетном зале "Колизей" (оранжевая метка). <br>
+        Оба места находятся совсем рядом, в нескольких шагах друг от друга.
+    </p>
+    <div id="venue-map"></div>
+</section>
+
+<!-- Секция: Программа дня -->
+<section class="schedule-section">
+    <h2 class="text-4xl mb-4">Программа дня</h2>
+    <div class="text-2xl schedule-list">
+        <p>14:30 - Сбор гостей у ЗАГСа</p>
+        <p>15:00 - Церемония</p>
+        <p>15:30 - Фотоперерыв</p>
+        <p>16:00 - Праздничный банкет</p>
+        <p>22:00 - Финал вечера</p>
+    </div>
+    <div class="decor-heart"></div>
+    <div class="schedule-flower schedule-flower-1"></div>
+    <div class="schedule-flower schedule-flower-2"></div>
+</section>
+
+<!-- Секция: Дресс-код -->
+<section class="section">
+    <h2 class="text-4xl mb-4">Дресс-код</h2>
+    <p class="text-2xl">
+        Мы очень старались создать стиль праздника в пастельных тонах, будем рады, если вы поддержите нашу задумку.
+    </p>
+    <div class="dress-code">
+        <div class="color-circle" style="background: #000000;"></div>
+        <div class="color-circle" style="background: #81634d;"></div>
+        <div class="color-circle" style="background: #6b705c;"></div>
+        <div class="color-circle" style="background: #cdc9a9;"></div>
+        <div class="color-circle" style="background: #d9c5b2;"></div>
+    </div>
+</section>
+
+<!-- Секция: Подарки -->
+<section class="section">
+    <h2 class="text-4xl mb-4">Подарки</h2>
+    <p class="text-2xl">
+        Ваши улыбки и смех подарят нам незабываемое счастье в этот день, а пожелания в конвертах помогут осуществить наши мечты!<br>
+        Просим вас не дарить нам цветы, мы не успеем насладиться их красотой до нашего отъезда.
+    </p>
+</section>
+
+<!-- Секция: Подтверждение -->
+<section class="confirmation-section" id="confirmation">
+    <h2 class="text-4xl mb-4">Подтверждение</h2>
+    <p class="text-2xl">
+        Мы будем очень рады видеть вас на нашем торжестве! Пожалуйста, заполните форму ниже, чтобы мы знали, что вас ждать. <br>
+        Будем ждать ответ до 1 июля.
+    </p>
+    <form id="weddingForm" class="space-y-6 mt-4 text-left">
+        <div>
+            <input type="text" id="name" class="custom-input" placeholder="Имя и Фамилия" required>
+        </div>
+        <div>
+            <input type="tel" id="phone" class="custom-input" value="+7 " required pattern="\+7\s\d{3}\s\d{3}\s\d{2}\s\d{2}" title="Введите номер в формате +7 999 888 77 66">
+        </div>
+        <div>
+            <input type="text" id="allergies" class="custom-input" placeholder="Есть ли аллергия на какие-то продукты?" onfocus="if(this.placeholder === 'Есть ли аллергия на какие-то продукты?') this.placeholder = ''" onblur="if(this.value === '') this.placeholder = 'Есть ли аллергия на какие-то продукты?'">
+        </div>
+        <div>
+            <input type="text" id="alcohol" class="custom-input" placeholder="Какие предпочтения по алкоголю?" onfocus="if(this.placeholder === 'Какие предпочтения по алкоголю?') this.placeholder = ''" onblur="if(this.value === '') this.placeholder = 'Какие предпочтения по алкоголю?'">
+        </div>
+        <div>
+            <label class="block text-xl">Сможете ли присутствовать на торжестве?</label>
+            <div class="radio-group">
+                <label class="radio-option"><input type="radio" name="attendance" value="yes" required> С удовольствием приду</label>
+                <label class="radio-option"><input type="radio" name="attendance" value="no"> К сожалению, не смогу присутствовать</label>
+            </div>
+        </div>
+        <button type="submit" class="submit-button">Отправить</button>
+    </form>
+    <!-- Сообщение об успешной отправке -->
+    <div id="confirmationMessage" class="confirmation-message">
+        <h2 class="text-5xl mb-5">Будем вас очень ждать!</h2>
+        <img src="public/welcome.jpg" alt="Добро пожаловать" class="confirmation-image">
+    </div>
+</section>
+
+<style>
+    .section {
+        max-width: 800px;
+        margin: 40px auto;
+        padding: 20px;
+        background: #fff;
+        border-radius: 10px;
+        text-align: center;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    }
+    .dress-code {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        margin: 20px 0;
+    }
+    .color-circle {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    }
+    .decor-heart {
+        width: 50px;
+        height: 50px;
+        margin: 20px auto;
+        background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MCIgaGVpZ2h0PSI1MCIgdmlld0JveD0iMCAwIDI4IDI0Ij48cGF0aCBmaWxsPSIjY2RjOWE5IiBkPSJNMjAuNzUgNS43NWMtMS41LTEuNS0zLjktMi4yNS02LTIuMjVzLTQuNS43NS02IDIuMjUtMi4yNSA0LjUtLjUgNi43NSAxLjc1IDYgMy45NSA0LjUgNi4yNSAyLjI1IDYuNzUtLjUgNC41LTIuMjUtMi4uMjUtNC41LTMuOTUtNi0yLjI1LTYuMjV6bTAgMS41YTEuNSAxLjUgMCAwIDEtMS41LTEuNSAzLjUgMy41IDAgMCAwLTMuNSAzLjUgMS41IDEuNSAwIDAgMS0zIDAgMy41IDMuNSAwIDAgMC0zLjUtMy41IDEuNSAxLjUgMCAwIDEtMS41IDEuNSA1LjUgNS41IDAgMCAxIDUuNSA1LjUgNS41IDUuNSAwIDAgMSA1LjUtNS41eiIvPjwvc3ZnPg==');
+    }
+    .button {
+        background: #6b705c;
+        color: #fff;
+        padding: 12px 25px;
+        border-radius: 25px;
+        text-decoration: none;
+        display: inline-block;
+        margin-top: 20px;
+        font-size: 1.1rem;
+        transition: all 0.3s ease;
+        border: none;
+        cursor: pointer;
+    }
+    .button:hover {
+        background: #5a5e4d;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    @media (max-width: 768px) {
+        .section {
+            margin: 20px;
+            padding: 15px;
+        }
+        .color-circle {
+            width: 30px;
+            height: 30px;
+        }
+    }
+</style>
+
+<script>
+    // Phone input formatting
+    const phoneInput = document.getElementById('phone');
+    phoneInput.addEventListener('input', function (e) {
+        let value = e.target.value.replace(/[^0-9]/g, '');
+        if (value.startsWith('7') && value.length > 11) {
+            value = value.slice(0, 11);
+        } else if (!value.startsWith('7') && value.length > 10) {
+            value = value.slice(0, 10);
+        }
+        let formatted = '+7';
+        if (value.length > 1) {
+            const digits = value.slice(1);
+            if (digits.length > 0) formatted += ' ' + digits.slice(0, 3);
+            if (digits.length > 3) formatted += ' ' + digits.slice(3, 6);
+            if (digits.length > 6) formatted += ' ' + digits.slice(6, 8);
+            if (digits.length > 8) formatted += ' ' + digits.slice(8, 10);
+        }
+        e.target.value = formatted;
+    });
+
+    phoneInput.value = '+7 ';
+
+    // Form submission to Telegram with validation
+    document.getElementById('weddingForm').addEventListener('submit', async function (e) {
+        e.preventDefault();
+
+        const nameInput = document.getElementById('name');
+        const phoneInput = document.getElementById('phone');
+        const allergiesInput = document.getElementById('allergies');
+        const alcoholInput = document.getElementById('alcohol');
+        const name = nameInput.value.trim();
+        const phone = phoneInput.value;
+        const allergies = allergiesInput.value;
+        const alcohol = alcoholInput.value;
+        const attendance = document.querySelector('input[name="attendance"]:checked')?.value || '';
+
+        // Validation
+        const nameWords = name.split(/\s+/).filter(word => word.length > 0);
+        if (nameWords.length < 2) {
+            alert('Пожалуйста, укажите имя и фамилию (два слова минимум).');
+            nameInput.focus();
+            return;
+        }
+
+        const phoneDigits = phone.replace(/[^0-9]/g, '');
+        if (phoneDigits.length < 11) {
+            alert('Пожалуйста, введите полный номер телефона (10 цифр после +7).');
+            phoneInput.focus();
+            return;
+        }
+
+        if (!attendance) {
+            alert('Пожалуйста, укажите, сможете ли присутствовать на торжестве.');
+            return;
+        }
+
+        const message = `Новое подтверждение:\nИмя и Фамилия: ${name}\nТелефон: ${phone}\nАллергии: ${allergies}\nПредпочтения по алкоголю: ${alcohol}\nПрисутствие: ${attendance}`;
+        const botToken = '8014787198:AAFwemuZfNMXoie3HXc7srX1HaFydhZxtkM';
+        const chatId = '358166619';
+        const url = `https://api.telegram.org/bot${botToken}/sendMessage`;
+
+        try {
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    chat_id: chatId,
+                    text: message
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error('Ошибка при отправке в Telegram');
+            }
+
+            // Показываем сообщение об успешной отправке
+            const confirmationMessage = document.getElementById('confirmationMessage');
+            confirmationMessage.classList.add('show');
+            document.getElementById('weddingForm').reset();
+            phoneInput.value = '+7 ';
+            allergiesInput.value = '';
+            alcoholInput.value = '';
+            allergiesInput.placeholder = 'Есть ли аллергия на какие-то продукты?';
+            alcoholInput.placeholder = 'Какие предпочтения по алкоголю?';
+
+            // Прокручиваем к блоку с сообщением
+            confirmationMessage.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        } catch (error) {
+            alert('Ошибка при отправке данных: ' + error.message);
+        }
+    });
+
+    // Yandex Map initialization
+    ymaps.ready(function () {
+        var myMap = new ymaps.Map('venue-map', {
+            center: [59.123964, 37.929132],
+            zoom: 17
+        });
+
+        var palacePlacemark = new ymaps.Placemark([59.123753, 37.928784], {
+            balloonContent: 'Дворец бракосочетания'
+        }, {
+            preset: 'islands#darkGreenDotIcon'
+        });
+
+        var coliseumPlacemark = new ymaps.Placemark([59.124174, 37.929779], {
+            balloonContent: 'Банкетный зал "Колизей"'
+        }, {
+            preset: 'islands#darkOrangeDotIcon'
+        });
+
+        myMap.geoObjects.add(palacePlacemark);
+        myMap.geoObjects.add(coliseumPlacemark);
+        myMap.setBounds(myMap.geoObjects.getBounds(), { checkZoomRange: true });
+    });
+</script>
+</body>
+</html>
